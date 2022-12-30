@@ -8,7 +8,5 @@ public:
 
     Ray(const Point& _origin, const Vector3& _direction);
 
-    Point at(double scalar) const;
+    Point at(double t) const;
 };
-
-Color calculate_color(const Ray& ray);

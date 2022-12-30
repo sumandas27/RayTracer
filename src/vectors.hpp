@@ -5,4 +5,9 @@ using Vector3 = ila::Vector<3>;
 using Color = ila::Vector<3>;
 using Point = ila::Vector<3>;
 
+struct Colors {
+    static const Color WHITE;
+    static const Color SKY_BLUE;
+};
+
 void output_color(std::ostream& os, const Color& color);
