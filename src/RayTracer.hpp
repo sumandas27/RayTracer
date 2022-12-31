@@ -1,10 +1,12 @@
 #pragma once
-#include "vectors.hpp"
+#include "utility.hpp"
 #include "Camera.hpp"
 #include "Ray.hpp"
 #include "Hittables/Hittable.hpp"
 #include "Hittables/HittableList.hpp"
 #include "Hittables/Sphere.hpp"
+
+//TODO after finish: tMax parameter for hit function?
 
 class RayTracer {
 public:

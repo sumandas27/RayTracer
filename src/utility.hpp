@@ -1,4 +1,5 @@
 #pragma once
+#include <random>
 #include "dependencies/IntrLinAlgLibrary.hpp"
 
 using Vector3 = ila::Vector<3>;
@@ -13,3 +14,8 @@ struct Colors {
 
 void output_color(std::ostream& os, const Color& color);
 void debug_color (std::ostream& os, const Color& color);
+
+constexpr double deg_to_rad(double degrees);
+constexpr double rad_to_deg(double radians);
+
+double random_double();
