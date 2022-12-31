@@ -1,9 +1,10 @@
 #pragma once
 #include "vectors.hpp"
-#include "Hittables/HittableList.hpp"
-#include "Hittables/Sphere.hpp"
 #include "Camera.hpp"
 #include "Ray.hpp"
+#include "Hittables/Hittable.hpp"
+#include "Hittables/HittableList.hpp"
+#include "Hittables/Sphere.hpp"
 
 class RayTracer {
 public:

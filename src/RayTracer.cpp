@@ -5,7 +5,7 @@ const double RayTracer::ASPECT_RATIO = 16.0 / 9;
 const int RayTracer::IMG_WIDTH = 400;
 const int RayTracer::IMG_HEIGHT = static_cast<int>(IMG_WIDTH / ASPECT_RATIO);
 
-RayTracer::RayTracer() : camera(ASPECT_RATIO) { 
+RayTracer::RayTracer() : camera(ASPECT_RATIO) {
     world.add(std::make_shared<Sphere>(Point(0, 0, -1), 0.5));
 }
 
@@ -31,7 +31,7 @@ Color RayTracer::calculate_color(const Ray& ray, const HittableList& world) {
     if (!worldIsHit) {
         Vector3 unitDirection = ila::unit_vector(ray.direction);
         double horizontalScaled = (unitDirection.y + 1.0) / 2;
-
+        
         Color rayColor = (1.0 - horizontalScaled) * Colors::WHITE + horizontalScaled * Colors::SKY_BLUE;
         return rayColor;
     }

@@ -1,6 +1,6 @@
 #include "Sphere.hpp"
 
-Sphere::Sphere(const Vector3& _center, double _radius) : center(_center), radius(_radius) { }
+Sphere::Sphere(const Point& _center, double _radius) : center(_center), radius(_radius) { }
 
 std::pair<bool, HitRecord> Sphere::hit(const Ray& ray, double tMin, double tMax) const {
     Vector3 originToCenter = ray.origin - center;

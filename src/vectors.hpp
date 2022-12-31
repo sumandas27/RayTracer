@@ -6,6 +6,7 @@ using Color = ila::Vector<3>;
 using Point = ila::Vector<3>;
 
 struct Colors {
+    static const Color RED;
     static const Color WHITE;
     static const Color SKY_BLUE;
 };

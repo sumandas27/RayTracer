@@ -1,6 +1,5 @@
 #pragma once
 #include "Hittable.hpp"
-#include "../Ray.hpp"
 
 class HittableList : public Hittable {
 public:
