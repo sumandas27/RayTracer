@@ -14,17 +14,18 @@ std::pair<bool, HitRecord> Sphere::hit(const Ray& ray, double tMin, double tMax)
 
     double sqrtD = std::sqrt(discriminant);
 
-    double root = (-halfB + sqrtD) / a; /* try + root */
+    double root = (-halfB - sqrtD) / a; /* try '-' root */
     if (root < tMin || root > tMax) {
-        root = (-halfB - sqrtD) / a;
-        if (root < tMin || root > tMax) /* try - root */
+        root = (-halfB + sqrtD) / a;
+        if (root < tMin || root > tMax) /* try '+' root */
             return std::make_pair(false, HitRecord());
     }
-
+    
     HitRecord hitRecord = HitRecord();
     hitRecord.t = root;
     hitRecord.contact = ray.at(root);
-    hitRecord.normal = ila::unit_vector(hitRecord.contact - center);
+    Vector3 outwardNormal = ila::unit_vector(hitRecord.contact - center);
+    hitRecord.set_normal(ray, outwardNormal);
 
     return std::pair(true, hitRecord);
 }

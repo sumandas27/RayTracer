@@ -19,6 +19,9 @@ std::pair<bool, HitRecord> HittableList::hit(const Ray& ray, double tMin, double
             continue;
 
         hitAnything = true;
+        if (closest <= hittableHitRecord.t)
+            continue;
+
         closest = hittableHitRecord.t;
         hitRecord = hittableHitRecord;
     }

@@ -14,7 +14,6 @@ public:
 
 private:
     Camera camera;
-
     HittableList world;
 
     static const double ASPECT_RATIO;

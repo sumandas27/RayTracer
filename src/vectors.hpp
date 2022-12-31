@@ -12,3 +12,4 @@ struct Colors {
 };
 
 void output_color(std::ostream& os, const Color& color);
+void debug_color (std::ostream& os, const Color& color);

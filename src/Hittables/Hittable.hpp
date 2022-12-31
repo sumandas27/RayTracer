@@ -8,7 +8,7 @@ struct HitRecord {
 
     HitRecord();
 
-    inline void set_normal(const Ray& ray, const Vector3& outwardNormal);
+    void set_normal(const Ray& ray, const Vector3& outwardNormal);
 };
 
 class Hittable {
