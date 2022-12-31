@@ -8,5 +8,5 @@ public:
 
     Ray(const Point& _origin, const Vector3& _direction);
 
-    Point at(double t) const;
+    Point at(float t) const;
 };

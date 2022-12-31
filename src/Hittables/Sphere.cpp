@@ -1,20 +1,20 @@
 #include "Sphere.hpp"
 
-Sphere::Sphere(const Point& _center, double _radius) : center(_center), radius(_radius) { }
+Sphere::Sphere(const Point& _center, float _radius) : center(_center), radius(_radius) { }
 
-std::pair<bool, HitRecord> Sphere::hit(const Ray& ray, double tMin, double tMax) const {
+std::pair<bool, HitRecord> Sphere::hit(const Ray& ray, float tMin, float tMax) const {
     Vector3 originToCenter = ray.origin - center;
-    double a = ila::dot(ray.direction, ray.direction);
-    double halfB = ila::dot(originToCenter, ray.direction);
-    double c = ila::dot(originToCenter, originToCenter) - radius * radius;
-    double discriminant = halfB * halfB - a * c;
+    float a = ila::dot(ray.direction, ray.direction);
+    float halfB = ila::dot(originToCenter, ray.direction);
+    float c = ila::dot(originToCenter, originToCenter) - radius * radius;
+    float discriminant = halfB * halfB - a * c;
     
     if (discriminant < 0)
         return std::make_pair(false, HitRecord());
 
-    double sqrtD = std::sqrt(discriminant);
+    float sqrtD = std::sqrt(discriminant);
 
-    double root = (-halfB - sqrtD) / a; /* try '-' root */
+    float root = (-halfB - sqrtD) / a; /* try '-' root */
     if (root < tMin || root > tMax) {
         root = (-halfB + sqrtD) / a;
         if (root < tMin || root > tMax) /* try '+' root */

@@ -15,7 +15,7 @@ struct Colors {
 void output_color(std::ostream& os, const Color& color);
 void debug_color (std::ostream& os, const Color& color);
 
-constexpr double deg_to_rad(double degrees);
-constexpr double rad_to_deg(double radians);
+constexpr float deg_to_rad(float degrees);
+constexpr float rad_to_deg(float radians);
 
-double random_double();
+float random_float();

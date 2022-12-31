@@ -1,9 +1,10 @@
 #include <iostream>
 #include "RayTracer.hpp"
 
-const double RayTracer::ASPECT_RATIO = 16.0 / 9;
+const float RayTracer::ASPECT_RATIO = 16.0 / 9;
 const int RayTracer::IMG_WIDTH = 400;
 const int RayTracer::IMG_HEIGHT = static_cast<int>(IMG_WIDTH / ASPECT_RATIO);
+const int RayTracer::SAMPLES_PER_PIXEL = 100;
 
 RayTracer::RayTracer() : camera(ASPECT_RATIO) {
     world.add(std::make_shared<Sphere>(Point(0, 0, -1), 0.5));
@@ -12,26 +13,34 @@ RayTracer::RayTracer() : camera(ASPECT_RATIO) {
 
 void RayTracer::output_image() {
     std::cout << "P3\n" << IMG_WIDTH << " " << IMG_HEIGHT << "\n255\n";
-    for (int row = IMG_HEIGHT - 1; row >= 0; row--)
-    for (int col = 0; col < IMG_WIDTH; col++) {
-        double horizFactor = static_cast<double>(col) / (IMG_WIDTH - 1);
-        double vertFactor  = static_cast<double>(row) / (IMG_HEIGHT - 1);
+    for (int row = IMG_HEIGHT - 1; row >= 0; row--) {
+        std::cerr << "\rSCANLINES REMAINING: " << row << " " << std::flush;
+        for (int col = 0; col < IMG_WIDTH; col++) {
+            Color pixelColor(0, 0, 0);
+            for (int sample = 0; sample < SAMPLES_PER_PIXEL; sample++) {
+                float horizFactor = static_cast<float>(col + random_float()) / (IMG_WIDTH - 1);
+                float vertFactor  = static_cast<float>(row + random_float()) / (IMG_HEIGHT - 1);
 
-        Vector3 direction = camera.LOWER_LEFT_CORNER + horizFactor * camera.HORIZONTAL + vertFactor * camera.VERTICAL;
-        Ray ray = Ray(Camera::ORIGIN, direction);
-
-        Color pixelColor = calculate_color(ray, world);
-        output_color(std::cout, pixelColor);
+                Ray ray = camera.get_ray(horizFactor, vertFactor);
+                pixelColor += calculate_color(ray, world);
+            }
+            
+            pixelColor /= SAMPLES_PER_PIXEL;
+            pixelColor.r() = std::min(pixelColor.r(), 0.999f);
+            pixelColor.g() = std::min(pixelColor.g(), 0.999f);
+            pixelColor.b() = std::min(pixelColor.b(), 0.999f);
+            output_color(std::cout, pixelColor);
+        }
     }
 }
 
 Color RayTracer::calculate_color(const Ray& ray, const HittableList& world) {
-    double infinity = std::numeric_limits<double>::infinity();
+    float infinity = std::numeric_limits<float>::infinity();
     auto [worldIsHit, worldHitRecord] = world.hit(ray, 0, infinity);
     
     if (!worldIsHit) {
         Vector3 unitDirection = ila::unit_vector(ray.direction);
-        double horizontalScaled = (unitDirection.y() + 1.0) / 2;
+        float horizontalScaled = (unitDirection.y() + 1.0) / 2;
             
         Color backgroundColor = (1.0 - horizontalScaled) * Colors::WHITE + horizontalScaled * Colors::SKY_BLUE;
         return backgroundColor;     

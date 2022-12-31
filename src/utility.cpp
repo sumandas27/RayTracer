@@ -16,16 +16,16 @@ void debug_color(std::ostream& os, const Color& color) {
        << static_cast<int>(255.999 * color.b()) << "\n"; 
 }
 
-constexpr double deg_to_rad(double degrees) {
+constexpr float deg_to_rad(float degrees) {
     return degrees * M_PI / 180.0;
 }
 
-constexpr double rad_to_deg(double radians) {
+constexpr float rad_to_deg(float radians) {
     return radians * 180.0 / M_PI;
 }
 
-double random_double() {
-    static std::uniform_real_distribution<double> distribution(0.0, 1.0);
+float random_float() {
+    static std::uniform_real_distribution<float> distribution(0.0, 1.0);
     static std::mt19937 generator;
     return distribution(generator);
 }

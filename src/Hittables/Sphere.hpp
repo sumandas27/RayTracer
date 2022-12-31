@@ -4,9 +4,9 @@
 class Sphere : public Hittable {
 public:
     Vector3 center;
-    double radius;
+    float radius;
 
-    Sphere(const Point& _center, double _radius);
+    Sphere(const Point& _center, float _radius);
 
-    std::pair<bool, HitRecord> hit(const Ray& ray, double tMin, double tMax) const override;
+    std::pair<bool, HitRecord> hit(const Ray& ray, float tMin, float tMax) const override;
 };

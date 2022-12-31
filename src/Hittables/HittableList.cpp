@@ -8,9 +8,9 @@ void HittableList::add(const std::shared_ptr<Hittable>& hittable) {
     hittables.emplace_back(hittable);
 }
 
-std::pair<bool, HitRecord> HittableList::hit(const Ray& ray, double tMin, double tMax) const {
+std::pair<bool, HitRecord> HittableList::hit(const Ray& ray, float tMin, float tMax) const {
     bool hitAnything = false;
-    double closest = tMax;
+    float closest = tMax;
     HitRecord hitRecord = HitRecord();
 
     for (const std::shared_ptr<Hittable>& hittable : hittables) {

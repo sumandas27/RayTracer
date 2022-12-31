@@ -18,9 +18,10 @@ private:
     Camera camera;
     HittableList world;
 
-    static const double ASPECT_RATIO;
+    static const float ASPECT_RATIO;
     static const int IMG_WIDTH;
     static const int IMG_HEIGHT;
+    static const int SAMPLES_PER_PIXEL;
 
     Color calculate_color(const Ray& ray, const HittableList& world);
 };

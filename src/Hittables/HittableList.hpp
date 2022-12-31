@@ -8,5 +8,5 @@ public:
     void clear();
     void add(const std::shared_ptr<Hittable>& hittable);
 
-    std::pair<bool, HitRecord> hit(const Ray& ray, double tMin, double tMax) const override;
+    std::pair<bool, HitRecord> hit(const Ray& ray, float tMin, float tMax) const override;
 };

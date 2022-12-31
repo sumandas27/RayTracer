@@ -4,7 +4,7 @@
 struct HitRecord {
     Point contact;
     Vector3 normal;
-    double t;
+    float t;
 
     HitRecord();
 
@@ -13,5 +13,5 @@ struct HitRecord {
 
 class Hittable {
 public:
-    virtual std::pair<bool, HitRecord> hit(const Ray& ray, double tMin, double tMax) const = 0;  
+    virtual std::pair<bool, HitRecord> hit(const Ray& ray, float tMin, float tMax) const = 0;  
 };
