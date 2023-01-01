@@ -16,6 +16,8 @@ struct Colors {
 void output_color(std::ostream& os, const Color& color);
 void debug_color (std::ostream& os, const Color& color);
 
+Vector3 multiply_components(const Vector3& v1, const Vector3& v2);
+
 float random_float();
 float random_float(float min, float max);
 

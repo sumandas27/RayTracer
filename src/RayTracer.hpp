@@ -5,6 +5,8 @@
 #include "Hittables/Hittable.hpp"
 #include "Hittables/HittableList.hpp"
 #include "Hittables/Sphere.hpp"
+#include "Materials/Material.hpp"
+#include "Materials/Lambertian.hpp"
 
 //TODO after finish: tMax parameter for hit function?
 

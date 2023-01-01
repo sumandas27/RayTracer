@@ -1,10 +1,13 @@
 #pragma once
 #include "../Ray.hpp"
 
+class Material;
+
 struct HitRecord {
     Point contact;
     Vector3 normal;
     float t;
+    std::shared_ptr<Material> materialPtr;
 
     HitRecord();
 

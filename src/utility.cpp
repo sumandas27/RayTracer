@@ -17,6 +17,14 @@ void debug_color(std::ostream& os, const Color& color) {
        << static_cast<int>(256 * color.b()) << "\n"; 
 }
 
+Vector3 multiply_components(const Vector3& v1, const Vector3& v2) {
+    Vector3 result = Vector3();
+    result.components[0] = v1.components[0] * v2.components[0];
+    result.components[1] = v1.components[1] * v2.components[1];
+    result.components[2] = v1.components[2] * v2.components[2];
+    return result;
+}
+
 float random_float() {
     static std::uniform_real_distribution<float> distribution(0.0f, 1.0f);
     static std::mt19937 generator;
@@ -31,7 +39,7 @@ Vector3 random_in_unit_sphere() {
     float x = random_float(-1, 1);
     float y = random_float(-1, 1);
     float z = random_float(-1, 1);
-    Vector3 random(x, y, z);
+    Vector3 random = Vector3(x, y, z);
     ila::normalize(random);
 
     float u = random_float();

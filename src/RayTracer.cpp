@@ -5,11 +5,13 @@ const float RayTracer::ASPECT_RATIO = 16.0 / 9;
 const int RayTracer::IMG_WIDTH = 400;
 const int RayTracer::IMG_HEIGHT = static_cast<int>(IMG_WIDTH / ASPECT_RATIO);
 const int RayTracer::SAMPLES_PER_PIXEL = 100;
-const int RayTracer::MAX_BOUNCES = 2;//50;
+const int RayTracer::MAX_BOUNCES = 50;
 
 RayTracer::RayTracer() : camera(ASPECT_RATIO) {
-    world.add(std::make_shared<Sphere>(Point(0, 0, -1), 0.5));
-    world.add(std::make_shared<Sphere>(Point(0, -100.5, -1), 100));
+    std::shared_ptr<Material> defaultLambertian = std::make_shared<Lambertian>(Color(0.5f, 0.5f, 0.5f));
+
+    world.add(std::make_shared<Sphere>(Point(0, 0     , -1), 0.5, defaultLambertian));
+    world.add(std::make_shared<Sphere>(Point(0, -100.5, -1), 100, defaultLambertian));
 }
 
 void RayTracer::output_image() {
@@ -41,10 +43,9 @@ Color RayTracer::calculate_color(const Ray& ray, const HittableList& world, int 
     auto [worldIsHit, worldHitRecord] = world.hit(ray, CONTACT_START, INFTY);
     
     if (worldIsHit) {
-        constexpr float LIGHT_ABSORPTION = 0.5f;
-        Vector3 reflectedDirection = random_in_hemisphere(worldHitRecord.normal);
-        Ray reflectedRay = Ray(worldHitRecord.contact, reflectedDirection);
-        return LIGHT_ABSORPTION * calculate_color(reflectedRay, world, bouncesLeft - 1);
+        auto [reflectedRay, albedo] = worldHitRecord.materialPtr->scattered_ray(ray, worldHitRecord);
+        Color reflectedColor = calculate_color(reflectedRay, world, bouncesLeft - 1);
+        return multiply_components(reflectedColor, albedo);
     }
 
     Vector3 unitDirection = ila::unit_vector(ray.direction);

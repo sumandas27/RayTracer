@@ -1,6 +1,7 @@
 #include "Sphere.hpp"
 
-Sphere::Sphere(const Point& _center, float _radius) : center(_center), radius(_radius) { }
+Sphere::Sphere(const Point& _center, float _radius, std::shared_ptr<Material> _materialPtr) 
+    : center(_center), radius(_radius), materialPtr(_materialPtr) { }
 
 std::pair<bool, HitRecord> Sphere::hit(const Ray& ray, float tMin, float tMax) const {
     Vector3 originToCenter = ray.origin - center;
@@ -26,6 +27,7 @@ std::pair<bool, HitRecord> Sphere::hit(const Ray& ray, float tMin, float tMax) c
     hitRecord.contact = ray.at(root);
     Vector3 outwardNormal = ila::unit_vector(hitRecord.contact - center);
     hitRecord.set_normal(ray, outwardNormal);
+    hitRecord.materialPtr = materialPtr;
 
     return std::pair(true, hitRecord);
 }
