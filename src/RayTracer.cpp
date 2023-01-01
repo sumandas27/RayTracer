@@ -4,14 +4,20 @@
 const float RayTracer::ASPECT_RATIO = 16.0 / 9;
 const int RayTracer::IMG_WIDTH = 400;
 const int RayTracer::IMG_HEIGHT = static_cast<int>(IMG_WIDTH / ASPECT_RATIO);
+
 const int RayTracer::SAMPLES_PER_PIXEL = 100;
 const int RayTracer::MAX_BOUNCES = 50;
 
 RayTracer::RayTracer() : camera(ASPECT_RATIO) {
-    std::shared_ptr<Material> defaultLambertian = std::make_shared<Lambertian>(Color(0.5f, 0.5f, 0.5f));
+    std::shared_ptr<Material> material_ground = std::make_shared<Lambertian>(Color(0.8, 0.8, 0.0));
+    std::shared_ptr<Material> material_center = std::make_shared<Lambertian>(Color(0.7, 0.3, 0.3));
+    std::shared_ptr<Material> material_left   = std::make_shared<Metal>(Color(0.8, 0.8, 0.8), 0.3);
+    std::shared_ptr<Material> material_right  = std::make_shared<Metal>(Color(0.8, 0.6, 0.2), 1.0);
 
-    world.add(std::make_shared<Sphere>(Point(0, 0     , -1), 0.5, defaultLambertian));
-    world.add(std::make_shared<Sphere>(Point(0, -100.5, -1), 100, defaultLambertian));
+    world.add(std::make_shared<Sphere>(Point( 0.0, -100.5, -1.0), 100.0, material_ground));
+    world.add(std::make_shared<Sphere>(Point( 0.0,    0.0, -1.0),   0.5, material_center));
+    world.add(std::make_shared<Sphere>(Point(-1.0,    0.0, -1.0),   0.5, material_left));
+    world.add(std::make_shared<Sphere>(Point( 1.0,    0.0, -1.0),   0.5, material_right));
 }
 
 void RayTracer::output_image() {
@@ -28,7 +34,7 @@ void RayTracer::output_image() {
                 pixelColor += calculate_color(ray, world, MAX_BOUNCES);
             }
             
-            finalize_accumulated(pixelColor);
+            finalize_color(pixelColor);
             output_color(std::cout, pixelColor);
         }
     }
@@ -43,9 +49,12 @@ Color RayTracer::calculate_color(const Ray& ray, const HittableList& world, int 
     auto [worldIsHit, worldHitRecord] = world.hit(ray, CONTACT_START, INFTY);
     
     if (worldIsHit) {
-        auto [reflectedRay, albedo] = worldHitRecord.materialPtr->scattered_ray(ray, worldHitRecord);
-        Color reflectedColor = calculate_color(reflectedRay, world, bouncesLeft - 1);
-        return multiply_components(reflectedColor, albedo);
+        auto [isValidScatter, scatteredRay, albedo] = worldHitRecord.materialPtr->scatter(ray, worldHitRecord);
+        if (isValidScatter) {
+            Color scatteredColor = calculate_color(scatteredRay, world, bouncesLeft - 1);
+            return multiply_components(scatteredColor, albedo);
+        }
+        return Colors::BLACK;
     }
 
     Vector3 unitDirection = ila::unit_vector(ray.direction);
@@ -55,7 +64,7 @@ Color RayTracer::calculate_color(const Ray& ray, const HittableList& world, int 
     return skyColor;   
 }
 
-void RayTracer::finalize_accumulated(Color& accumulatedColor) {
+void RayTracer::finalize_color(Color& accumulatedColor) {
     accumulatedColor /= SAMPLES_PER_PIXEL;
 
     gamma_correct(accumulatedColor);

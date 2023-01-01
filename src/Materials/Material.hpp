@@ -6,5 +6,10 @@ struct HitRecord;
 
 class Material {
 public:
-    virtual std::pair<Ray, Color> scattered_ray(const Ray& inputRay, const HitRecord& hitRecord) const = 0;
+    Material(Color _albedo);
+
+    virtual std::tuple<bool, Ray, Color> scatter(const Ray& inputRay, const HitRecord& hitRecord) const = 0;
+
+protected:
+    const Color albedo;
 };
