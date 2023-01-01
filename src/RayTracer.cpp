@@ -17,10 +17,10 @@ void RayTracer::output_image() {
     for (int row = IMG_HEIGHT - 1; row >= 0; row--) {
         std::cerr << "\rSCANLINES REMAINING: " << row << " " << std::flush;
         for (int col = 0; col < IMG_WIDTH; col++) {
-            Color pixelColor(0, 0, 0);
+            Color pixelColor(0.0f, 0.0f, 0.0f);
             for (int sample = 0; sample < SAMPLES_PER_PIXEL; sample++) {
-                float horizFactor = static_cast<float>(col + random_float()) / (IMG_WIDTH - 1);
-                float vertFactor  = static_cast<float>(row + random_float()) / (IMG_HEIGHT - 1);
+                float horizFactor = (col + random_float()) / (IMG_WIDTH - 1);
+                float vertFactor  = (row + random_float()) / (IMG_HEIGHT - 1);
 
                 Ray ray = camera.get_ray(horizFactor, vertFactor);
                 pixelColor += calculate_color(ray, world, MAX_BOUNCES);
@@ -36,21 +36,21 @@ Color RayTracer::calculate_color(const Ray& ray, const HittableList& world, int 
     if (bouncesLeft <= 0)
         return Colors::BLACK;
 
-    constexpr float CONTACT_START = 0.0001;
-    constexpr float INF = std::numeric_limits<float>::infinity();
-    auto [worldIsHit, worldHitRecord] = world.hit(ray, CONTACT_START, INF);
+    constexpr float CONTACT_START = 0.0001f;
+    constexpr float INFTY = std::numeric_limits<float>::infinity();
+    auto [worldIsHit, worldHitRecord] = world.hit(ray, CONTACT_START, INFTY);
     
     if (worldIsHit) {
-        constexpr float LIGHT_ABSORPTION = 0.5;
+        constexpr float LIGHT_ABSORPTION = 0.5f;
         Vector3 reflectedDirection = random_in_hemisphere(worldHitRecord.normal);
         Ray reflectedRay = Ray(worldHitRecord.contact, reflectedDirection);
         return LIGHT_ABSORPTION * calculate_color(reflectedRay, world, bouncesLeft - 1);
     }
 
     Vector3 unitDirection = ila::unit_vector(ray.direction);
-    float horizontalScaled = (unitDirection.y() + 1.0) / 2;
+    float horizontalScaled = (unitDirection.y() + 1.0f) / 2;
         
-    Color skyColor = (1.0 - horizontalScaled) * Colors::WHITE + horizontalScaled * Colors::SKY_BLUE;
+    Color skyColor = (1.0f - horizontalScaled) * Colors::WHITE + horizontalScaled * Colors::SKY_BLUE;
     return skyColor;   
 }
 
