@@ -25,6 +25,6 @@ std::pair<bool, HitRecord> HittableList::hit(const Ray& ray, float tMin, float t
         closest = hittableHitRecord.t;
         hitRecord = hittableHitRecord;
     }
-    
+
     return std::make_pair(hitAnything, hitRecord);
 }

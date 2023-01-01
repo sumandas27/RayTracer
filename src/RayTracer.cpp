@@ -5,6 +5,7 @@ const float RayTracer::ASPECT_RATIO = 16.0 / 9;
 const int RayTracer::IMG_WIDTH = 400;
 const int RayTracer::IMG_HEIGHT = static_cast<int>(IMG_WIDTH / ASPECT_RATIO);
 const int RayTracer::SAMPLES_PER_PIXEL = 100;
+const int RayTracer::MAX_BOUNCES = 2;//50;
 
 RayTracer::RayTracer() : camera(ASPECT_RATIO) {
     world.add(std::make_shared<Sphere>(Point(0, 0, -1), 0.5));
@@ -22,7 +23,7 @@ void RayTracer::output_image() {
                 float vertFactor  = static_cast<float>(row + random_float()) / (IMG_HEIGHT - 1);
 
                 Ray ray = camera.get_ray(horizFactor, vertFactor);
-                pixelColor += calculate_color(ray, world);
+                pixelColor += calculate_color(ray, world, MAX_BOUNCES);
             }
             
             pixelColor /= SAMPLES_PER_PIXEL;
@@ -34,18 +35,23 @@ void RayTracer::output_image() {
     }
 }
 
-Color RayTracer::calculate_color(const Ray& ray, const HittableList& world) {
+Color RayTracer::calculate_color(const Ray& ray, const HittableList& world, int bouncesLeft) {
+    if (bouncesLeft <= 0)
+        return Colors::BLACK;
+
     float infinity = std::numeric_limits<float>::infinity();
     auto [worldIsHit, worldHitRecord] = world.hit(ray, 0, infinity);
     
-    if (!worldIsHit) {
-        Vector3 unitDirection = ila::unit_vector(ray.direction);
-        float horizontalScaled = (unitDirection.y() + 1.0) / 2;
-            
-        Color backgroundColor = (1.0 - horizontalScaled) * Colors::WHITE + horizontalScaled * Colors::SKY_BLUE;
-        return backgroundColor;     
+    if (worldIsHit) {
+        constexpr float LIGHT_ABSORPTION = 0.5;
+        Vector3 reflectedDirection = worldHitRecord.normal + random_in_unit_sphere();
+        Ray reflectedRay = Ray(worldHitRecord.contact, reflectedDirection);
+        return LIGHT_ABSORPTION * calculate_color(reflectedRay, world, bouncesLeft - 1);
     }
 
-    Color objectColor = 0.5 * (worldHitRecord.normal + Color(1, 1, 1));
-    return objectColor;
+    Vector3 unitDirection = ila::unit_vector(ray.direction);
+    float horizontalScaled = (unitDirection.y() + 1.0) / 2;
+        
+    Color backgroundColor = (1.0 - horizontalScaled) * Colors::WHITE + horizontalScaled * Colors::SKY_BLUE;
+    return backgroundColor;   
 }

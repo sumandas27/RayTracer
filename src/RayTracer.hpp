@@ -22,6 +22,7 @@ private:
     static const int IMG_WIDTH;
     static const int IMG_HEIGHT;
     static const int SAMPLES_PER_PIXEL;
+    static const int MAX_BOUNCES;
 
-    Color calculate_color(const Ray& ray, const HittableList& world);
+    Color calculate_color(const Ray& ray, const HittableList& world, int bouncesLeft);
 };

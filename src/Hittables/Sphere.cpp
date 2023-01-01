@@ -8,19 +8,19 @@ std::pair<bool, HitRecord> Sphere::hit(const Ray& ray, float tMin, float tMax) c
     float halfB = ila::dot(originToCenter, ray.direction);
     float c = ila::dot(originToCenter, originToCenter) - radius * radius;
     float discriminant = halfB * halfB - a * c;
-    
+
     if (discriminant < 0)
         return std::make_pair(false, HitRecord());
 
     float sqrtD = std::sqrt(discriminant);
 
     float root = (-halfB - sqrtD) / a; /* try '-' root */
-    if (root < tMin || root > tMax) {
+    if (root <= tMin || root >= tMax) {
         root = (-halfB + sqrtD) / a;
-        if (root < tMin || root > tMax) /* try '+' root */
+        if (root <= tMin || root >= tMax) /* try '+' root */
             return std::make_pair(false, HitRecord());
     }
-    
+
     HitRecord hitRecord = HitRecord();
     hitRecord.t = root;
     hitRecord.contact = ray.at(root);

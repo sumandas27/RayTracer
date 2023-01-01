@@ -7,6 +7,7 @@ using Color = ila::Vector<3>;
 using Point = ila::Vector<3>;
 
 struct Colors {
+    static const Color BLACK;
     static const Color RED;
     static const Color WHITE;
     static const Color SKY_BLUE;
@@ -15,7 +16,9 @@ struct Colors {
 void output_color(std::ostream& os, const Color& color);
 void debug_color (std::ostream& os, const Color& color);
 
+float random_float();
+float random_float(float min, float max);
+Vector3 random_in_unit_sphere();
+
 constexpr float deg_to_rad(float degrees);
 constexpr float rad_to_deg(float radians);
-
-float random_float();
