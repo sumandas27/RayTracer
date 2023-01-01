@@ -25,4 +25,5 @@ private:
     static const int MAX_BOUNCES;
 
     Color calculate_color(const Ray& ray, const HittableList& world, int bouncesLeft);
+    void average_accumulated(Color& accumulatedColor);
 };

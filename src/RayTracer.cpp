@@ -26,10 +26,7 @@ void RayTracer::output_image() {
                 pixelColor += calculate_color(ray, world, MAX_BOUNCES);
             }
             
-            pixelColor /= SAMPLES_PER_PIXEL;
-            pixelColor.r() = std::min(pixelColor.r(), 0.999f);
-            pixelColor.g() = std::min(pixelColor.g(), 0.999f);
-            pixelColor.b() = std::min(pixelColor.b(), 0.999f);
+            average_accumulated(pixelColor);
             output_color(std::cout, pixelColor);
         }
     }
@@ -54,4 +51,11 @@ Color RayTracer::calculate_color(const Ray& ray, const HittableList& world, int 
         
     Color backgroundColor = (1.0 - horizontalScaled) * Colors::WHITE + horizontalScaled * Colors::SKY_BLUE;
     return backgroundColor;   
+}
+
+void RayTracer::average_accumulated(Color& accumulatedColor) {
+    accumulatedColor /= SAMPLES_PER_PIXEL;
+    accumulatedColor.r() = std::min(accumulatedColor.r(), 0.999f);
+    accumulatedColor.g() = std::min(accumulatedColor.g(), 0.999f);
+    accumulatedColor.b() = std::min(accumulatedColor.b(), 0.999f);
 }

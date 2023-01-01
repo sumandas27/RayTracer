@@ -28,9 +28,9 @@ float random_float(float min, float max) {
 }
 
 Vector3 random_in_unit_sphere() {
-    float x = random_float() * 2 - 1;
-    float y = random_float() * 2 - 1;
-    float z = random_float() * 2 - 1;
+    float x = random_float(-1, 1);
+    float y = random_float(-1, 1);
+    float z = random_float(-1, 1);
     Vector3 random(x, y, z);
     ila::normalize(random);
 
