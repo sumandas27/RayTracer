@@ -40,6 +40,11 @@ Vector3 random_in_unit_sphere() {
     return random;
 } 
 
+Vector3 random_in_hemisphere(const Vector3& direction) {
+    Vector3 random = random_in_unit_sphere();
+    return (ila::dot(random, direction) >= 0) ? random : -1 * random;
+}
+
 constexpr float deg_to_rad(float degrees) {
     return degrees * M_PI / 180.0;
 }

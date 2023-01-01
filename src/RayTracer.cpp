@@ -36,12 +36,13 @@ Color RayTracer::calculate_color(const Ray& ray, const HittableList& world, int 
     if (bouncesLeft <= 0)
         return Colors::BLACK;
 
-    float infinity = std::numeric_limits<float>::infinity();
-    auto [worldIsHit, worldHitRecord] = world.hit(ray, 0, infinity);
+    constexpr float CONTACT_START = 0.0001;
+    constexpr float INF = std::numeric_limits<float>::infinity();
+    auto [worldIsHit, worldHitRecord] = world.hit(ray, CONTACT_START, INF);
     
     if (worldIsHit) {
         constexpr float LIGHT_ABSORPTION = 0.5;
-        Vector3 reflectedDirection = worldHitRecord.normal + random_in_unit_sphere();
+        Vector3 reflectedDirection = random_in_hemisphere(worldHitRecord.normal);
         Ray reflectedRay = Ray(worldHitRecord.contact, reflectedDirection);
         return LIGHT_ABSORPTION * calculate_color(reflectedRay, world, bouncesLeft - 1);
     }
@@ -49,8 +50,8 @@ Color RayTracer::calculate_color(const Ray& ray, const HittableList& world, int 
     Vector3 unitDirection = ila::unit_vector(ray.direction);
     float horizontalScaled = (unitDirection.y() + 1.0) / 2;
         
-    Color backgroundColor = (1.0 - horizontalScaled) * Colors::WHITE + horizontalScaled * Colors::SKY_BLUE;
-    return backgroundColor;   
+    Color skyColor = (1.0 - horizontalScaled) * Colors::WHITE + horizontalScaled * Colors::SKY_BLUE;
+    return skyColor;   
 }
 
 void RayTracer::finalize_accumulated(Color& accumulatedColor) {

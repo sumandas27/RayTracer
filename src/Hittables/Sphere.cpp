@@ -15,9 +15,9 @@ std::pair<bool, HitRecord> Sphere::hit(const Ray& ray, float tMin, float tMax) c
     float sqrtD = std::sqrt(discriminant);
 
     float root = (-halfB - sqrtD) / a; /* try '-' root */
-    if (root <= tMin || root >= tMax) {
+    if (root < tMin || root > tMax) {
         root = (-halfB + sqrtD) / a;
-        if (root <= tMin || root >= tMax) /* try '+' root */
+        if (root < tMin || root > tMax) /* try '+' root */
             return std::make_pair(false, HitRecord());
     }
 
