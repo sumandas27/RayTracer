@@ -3,13 +3,13 @@ SRCS := $(shell find $(SRCDIR) -name '*.cpp')
 
 main:
 	mkdir -p build
-	g++ -o build/main -std=c++17 -g -O $(SRCS)
+	g++ -o build/main -std=c++17 -g -Ofast $(SRCS)
 	build/main > image.ppm
 	open image.ppm
 
 debug:
 	mkdir -p build
-	g++ -o build/main -std=c++17 -g $(SRCS)
+	g++ -o build/main -std=c++17 -g -Ofast $(SRCS)
 	./build/main
 
 cloc:

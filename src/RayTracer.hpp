@@ -8,6 +8,7 @@
 #include "Materials/Material.hpp"
 #include "Materials/Lambertian.hpp"
 #include "Materials/Metal.hpp"
+#include "Materials/Dielectric.hpp"
 
 //TODO after finish: tMax parameter for hit function?
 
