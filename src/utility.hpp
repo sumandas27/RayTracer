@@ -24,5 +24,5 @@ float random_float(float min, float max);
 Vector3 random_in_unit_sphere();
 Vector3 random_in_hemisphere(const Vector3& direction);
 
-constexpr float deg_to_rad(float degrees);
-constexpr float rad_to_deg(float radians);
+float deg_to_rad(float degrees);
+float rad_to_deg(float radians);

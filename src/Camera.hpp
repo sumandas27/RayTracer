@@ -4,7 +4,7 @@
 
 class Camera {
 public:
-    Camera(float aspectRatio);
+    Camera(float aspectRatio, float fieldOfView);
 
     Ray get_ray(float horizontalFactor, float verticalFactor);
 

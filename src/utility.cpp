@@ -53,10 +53,10 @@ Vector3 random_in_hemisphere(const Vector3& direction) {
     return (ila::dot(random, direction) >= 0) ? random : -1 * random;
 }
 
-constexpr float deg_to_rad(float degrees) {
+float deg_to_rad(float degrees) {
     return degrees * M_PI / 180.0;
 }
 
-constexpr float rad_to_deg(float radians) {
+float rad_to_deg(float radians) {
     return radians * 180.0 / M_PI;
 }

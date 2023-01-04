@@ -2,8 +2,11 @@
 
 const Point Camera::ORIGIN = Point(0, 0, 0);
 
-Camera::Camera(float aspectRatio) {
-    const float viewportHeight = 2.0;
+Camera::Camera(float aspectRatio, float fieldOfView) {
+    float fovInRadians = deg_to_rad(fieldOfView);
+    float heightScalar = std::tanf(fovInRadians / 2);
+
+    const float viewportHeight = 2.0 * heightScalar;
     const float viewportWidth = viewportHeight * aspectRatio;
     const float focalLength = 1.0;
 

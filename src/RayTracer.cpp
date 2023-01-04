@@ -8,12 +8,13 @@ const int RayTracer::IMG_HEIGHT = static_cast<int>(IMG_WIDTH / ASPECT_RATIO);
 const int RayTracer::SAMPLES_PER_PIXEL = 100;
 const int RayTracer::MAX_BOUNCES = 50;
 
-RayTracer::RayTracer() : camera(ASPECT_RATIO) {
+RayTracer::RayTracer() : camera(ASPECT_RATIO, 90.0) {
     std::shared_ptr<Material> materialLeft  = std::make_shared<Lambertian>(Color(0, 0, 1));
     std::shared_ptr<Material> materialRight = std::make_shared<Lambertian>(Color(1, 0, 0));
 
-    world.add(std::make_shared<Sphere>(Point(-1, 0, -1), 1, materialLeft));
-    world.add(std::make_shared<Sphere>(Point( 1, 0, -1), 1, materialRight));
+    float radius = std::cosf(M_PI / 4);
+    world.add(std::make_shared<Sphere>(Point(-radius, 0, -1), radius, materialLeft));
+    world.add(std::make_shared<Sphere>(Point( radius, 0, -1), radius, materialRight));
 }
 
 void RayTracer::output_image() {
