@@ -25,7 +25,7 @@ private:
     static const float ASPECT_RATIO;
     static const int IMG_WIDTH;
     static const int IMG_HEIGHT;
-
+    
     static const int SAMPLES_PER_PIXEL;
     static const int MAX_BOUNCES;
 

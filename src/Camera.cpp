@@ -1,11 +1,10 @@
 #include "Camera.hpp"
 
-const float Camera::ASPECT_RATIO = 16.0 / 9.0;
 const Point Camera::ORIGIN = Point(0, 0, 0);
 
 Camera::Camera(float aspectRatio) {
     const float viewportHeight = 2.0;
-    const float viewportWidth = viewportHeight * ASPECT_RATIO;
+    const float viewportWidth = viewportHeight * aspectRatio;
     const float focalLength = 1.0;
 
     horizontal = Vector3(viewportWidth, 0, 0);

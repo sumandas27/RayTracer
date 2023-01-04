@@ -9,7 +9,6 @@ public:
     Ray get_ray(float horizontalFactor, float verticalFactor);
 
 private:
-    static const float ASPECT_RATIO;
     static const Point ORIGIN;
 
     Vector3 horizontal;
