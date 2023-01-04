@@ -42,8 +42,8 @@ Vector3 random_in_unit_sphere() {
     Vector3 random = Vector3(x, y, z);
     ila::normalize(random);
 
-    float u = random_float();
-    float scalar = std::cbrtf(u);
+    float rawScalar = random_float();
+    float scalar = std::cbrtf(rawScalar);
     random *= scalar;
     return random;
 } 
@@ -51,6 +51,15 @@ Vector3 random_in_unit_sphere() {
 Vector3 random_in_hemisphere(const Vector3& direction) {
     Vector3 random = random_in_unit_sphere();
     return (ila::dot(random, direction) >= 0) ? random : -1 * random;
+}
+
+Point random_in_unit_disk() {
+    float radius = std::sqrtf(random_float());
+    float theta = 2 * M_PI * random_float();
+
+    float xPos = radius * std::cosf(theta);
+    float yPos = radius * std::sinf(theta);
+    return Point(xPos, yPos, 0.0f);
 }
 
 float deg_to_rad(float degrees) {

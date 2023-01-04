@@ -8,13 +8,17 @@ const int RayTracer::IMG_HEIGHT = static_cast<int>(IMG_WIDTH / ASPECT_RATIO);
 const int RayTracer::SAMPLES_PER_PIXEL = 100;
 const int RayTracer::MAX_BOUNCES = 50;
 
-RayTracer::RayTracer() : camera(ASPECT_RATIO, 90.0) {
-    std::shared_ptr<Material> materialLeft  = std::make_shared<Lambertian>(Color(0, 0, 1));
-    std::shared_ptr<Material> materialRight = std::make_shared<Lambertian>(Color(1, 0, 0));
+RayTracer::RayTracer() : world(), camera(ASPECT_RATIO) {
+    std::shared_ptr<Material> materialGround = std::make_shared<Lambertian>(Color(0.8, 0.8, 0.0));
+    std::shared_ptr<Material> materialCenter = std::make_shared<Lambertian>(Color(0.1, 0.2, 0.5));
+    std::shared_ptr<Material> materialLeft   = std::make_shared<Dielectric>(1.5);
+    std::shared_ptr<Material> materialRight  = std::make_shared<Metal>(Color(0.8, 0.6, 0.2), 0.0);
 
-    float radius = std::cosf(M_PI / 4);
-    world.add(std::make_shared<Sphere>(Point(-radius, 0, -1), radius, materialLeft));
-    world.add(std::make_shared<Sphere>(Point( radius, 0, -1), radius, materialRight));
+    world.add(std::make_shared<Sphere>(Point( 0.0, -100.5, -1.0), 100.0, materialGround));
+    world.add(std::make_shared<Sphere>(Point( 0.0,    0.0, -1.0),   0.5, materialCenter));
+    world.add(std::make_shared<Sphere>(Point(-1.0,    0.0, -1.0),   0.5, materialLeft));
+    world.add(std::make_shared<Sphere>(Point(-1.0,    0.0, -1.0), -0.45, materialLeft));
+    world.add(std::make_shared<Sphere>(Point( 1.0,    0.0, -1.0),   0.5, materialRight));
 }
 
 void RayTracer::output_image() {
