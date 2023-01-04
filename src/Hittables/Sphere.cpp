@@ -8,8 +8,8 @@ std::pair<bool, HitRecord> Sphere::hit(const Ray& ray, float tMin, float tMax) c
     float a = ila::dot(ray.direction, ray.direction);
     float halfB = ila::dot(originToCenter, ray.direction);
     float c = ila::dot(originToCenter, originToCenter) - radius * radius;
-    float discriminant = halfB * halfB - a * c;
 
+    float discriminant = halfB * halfB - a * c;
     if (discriminant < 0)
         return std::make_pair(false, HitRecord());
 
@@ -25,8 +25,8 @@ std::pair<bool, HitRecord> Sphere::hit(const Ray& ray, float tMin, float tMax) c
     HitRecord hitRecord = HitRecord();
     hitRecord.t = root;
     hitRecord.contact = ray.at(root);
-    Vector3 outwardNormal = ila::unit_vector(hitRecord.contact - center);
-    hitRecord.set_normal(ray, outwardNormal);
+    Vector3 outwardUnitNormal = (hitRecord.contact - center) / radius;
+    hitRecord.set_normal(ray, outwardUnitNormal);
     hitRecord.materialPtr = materialPtr;
 
     return std::pair(true, hitRecord);

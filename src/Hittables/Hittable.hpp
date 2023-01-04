@@ -6,7 +6,7 @@ class Material;
 struct HitRecord {
     Point contact;
     bool facingOutside;
-    Vector3 normal;
+    Vector3 unitNormal;
     float t;
     std::shared_ptr<Material> materialPtr;
 
